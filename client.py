@@ -11,10 +11,11 @@ sending = threading.Thread(target=send)
 def get():
         while True:
             data = s.recv(1024)
-            print(f"Received {data!r}")
+            print(data)
 receaving = threading.Thread(target=get)
 with socket(AF_INET, SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     sending.start()
     receaving.start()
     receaving.join()
+    

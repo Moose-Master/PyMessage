@@ -18,9 +18,9 @@ def multi_client(conn):
                                                 connections.remove(c)
                         if not data:
                                 return
-                
 
-        
+                
+                       
 HOST = "192.168.68.102"  # Standard loopback interface address (localhost)
 PORT = 65433  # Port to listen on (non-privileged ports are > 1023)
 on = 0
