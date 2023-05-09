@@ -1,4 +1,4 @@
-from socket import *
+import socket
 import threading
 connections = []
 
@@ -24,7 +24,7 @@ def multi_client(conn):
 HOST = "192.168.68.102"  # Standard loopback interface address (localhost)
 PORT = 65433  # Port to listen on (non-privileged ports are > 1023)
 on = 0
-with socket(AF_INET, SOCK_STREAM) as s: 
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
         s.bind((HOST, PORT))
         while True:
                 if on == 0:
