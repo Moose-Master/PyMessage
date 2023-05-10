@@ -22,9 +22,11 @@ def get():
 receaving = threading.Thread(target=get)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    nameslen = int(s.recv(1024))
+    #nameslen = int(s.recv(1024))
+    nameslen = int.from_bytes(forcebytes.fr(s,4), byteorder='big')
     for i in range(nameslen):
-        names.append(s.recv(1024))
+        namelen = int.from_bytes(forcebytes.fr(s,4), byteorder='big')
+        names.append((forcebytes.fr(s,namelen)).decode('utf-8'))
     sending.start()
     receaving.start()
     receaving.join()
