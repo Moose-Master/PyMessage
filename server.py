@@ -3,7 +3,6 @@ import threading
 import forcebytes
 connections = []
 names = []
-names.append('Ivan')
 nameslen = len(names)
 def multi_client(conn):
                 print(f"Connected by {addr}")

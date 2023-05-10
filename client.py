@@ -5,8 +5,13 @@ HOST = "68.168.164.146"  # The server's hostname or IP address
 PORT = 65433  # The port used by the server
 names = []
 def send():
-    print(names)
     name = input("Name? ")
+    for i in range(len(names)):
+        if names[i] == name:
+             print("That name is taken")
+             exit()
+        else:
+             print("👍")    
     s.sendall(str.encode(name))
     while True:
         print("Ready")
