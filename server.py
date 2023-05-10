@@ -1,7 +1,6 @@
 import socket
 import threading
 connections = []
-
 def multi_client(conn):
                 print(f"Connected by {addr}")
                 while True:
@@ -18,9 +17,6 @@ def multi_client(conn):
                                                 connections.remove(c)
                         if not data:
                                 return
-
-                
-                       
 HOST = "192.168.68.102"  # Standard loopback interface address (localhost)
 PORT = 65433  # Port to listen on (non-privileged ports are > 1023)
 on = 0
@@ -35,4 +31,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
                 connections.append(conn)
                 thread = threading.Thread(target=multi_client, args=[conn])
                 thread.start()
-                
