@@ -1,8 +1,17 @@
 import socket
 import threading
+import forcebytes
 connections = []
+names = []
+names.append('Ivan')
+nameslen = len(names)
 def multi_client(conn):
                 print(f"Connected by {addr}")
+                conn.sendall(str.encode(str(nameslen)))
+                for w in range(len(names)):
+                        conn.sendall(str.encode(names[w]))
+                names.append(conn.recv(1024).decode("ascii"))
+                print(names)
                 while True:
                         try:
                                 data = conn.recv(1024)
