@@ -4,10 +4,14 @@ import forcebytes
 HOST = "68.168.164.146"  # The server's hostname or IP address
 PORT = 65433  # The port used by the server
 def send():
+    s.sendall((len(name)).to_bytes(4,'big'))
+    s.sendall(str.encode("^",'ascii'))
+    s.sendall(str.encode(name,'ascii'))
     while True:
         print("Ready")
-        mesg = str.encode(name +": " + input(),"utf-8")
+        mesg = str.encode(input(),"utf-8")
         s.sendall((len(mesg)).to_bytes(4,'big'))
+        s.sendall(str.encode("M",'ascii'))
         s.sendall(mesg)
 sending = threading.Thread(target=send)
 def get():
