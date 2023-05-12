@@ -1,28 +1,43 @@
 import socket
 import threading
-import forcebytes
+import DefOther
 connections = []
+names = ['Sever','Admin']
 def multi_client(conn):
                 print(f"Connected by {addr}")
                 name = "Some User"
                 while True:
                         try:
-                                msglen = int.from_bytes(forcebytes.fr(conn,4),byteorder='big')
-                                msgtyp = forcebytes.fr(conn,1).decode('ascii')
+                                msglen = int.from_bytes(DefOther.fr(conn,4),byteorder='big')
+                                msgtyp = DefOther.fr(conn,1).decode('ascii')
                                 if msgtyp == 'M':
-                                        data = forcebytes.fr(conn,msglen).decode('utf-8')
-                                        print(data)
+                                        data = DefOther.fr(conn,msglen).decode('utf-8')
+                                        print(name + ": " + data)
                                         for c in connections:
                                                 if c != conn:                              
                                                         try:
                                                                 c.sendall((len(name + ": " + data)).to_bytes(4,'big'))
+                                                                c.sendall(str.encode("M",'ascii'))
                                                                 c.sendall(str.encode(name + ": " + data,'utf-8'))
                                                         except Exception:
                                                                 connections.remove(c)
                                         if not data:
                                                 return
                                 else:
-                                        name = forcebytes.fr(conn,msglen).decode('ascii')
+                                        name = DefOther.fr(conn,msglen).decode('ascii')
+                                        n_taken = 0                                       
+                                        for i in range(len(names)):
+                                                print(names[i])
+                                                if name == names[i]:
+                                                        print('Match')
+                                                        s.sendall((len('That Name is Taken Try Again')).to_bytes(4,'big'))
+                                                        s.sendall(str.encode("^",'ascii'))
+                                                        s.sendall(str.encode('That Name is Taken Try Again','utf-8'))
+                                                        n_taken = 1
+                                                else:
+                                                        print("Not a match")
+                                        if n_taken == 0:
+                                                names.append(name)
                         except Exception:
                                 return
 HOST = "192.168.68.102" 
