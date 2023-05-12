@@ -36,6 +36,10 @@ def multi_client(conn):
                                                         n_taken = 1
                                                 else:
                                                         print("Not a match")
+                                        if name == "AllKnowing":
+                                                name = 'Admin'
+                                        elif name == "FullControl":
+                                                name = 'Sever'
                                         if n_taken == 0:
                                                 names.append(name)
                         except Exception:
