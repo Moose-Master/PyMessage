@@ -21,6 +21,7 @@ def multi_client(conn):
                                                                 c.sendall(str.encode(name + ": " + data,'utf-8'))
                                                         except Exception:
                                                                 connections.remove(c)
+                                                                names.remove(name)
                                         if not data:
                                                 return
                                 else:
