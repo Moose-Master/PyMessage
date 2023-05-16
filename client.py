@@ -10,7 +10,7 @@ def send():
     s.sendall(str.encode(name,'ascii'))
     while True:
         print("Ready")
-        DefOther.sendmsg("M",s)
+        DefOther.sendmsg(s)
 sending = threading.Thread(target=send)
 def get():
         while True:
@@ -19,9 +19,8 @@ def get():
             data = (DefOther.fr(s,bytelen)).decode('utf-8')
             if msgtyp == "M":
                 print(data)
-            else:
-                print(data)
-                print('Try again')
+            elif msgtyp == '^':
+                exit(0)
 receaving = threading.Thread(target=get)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))

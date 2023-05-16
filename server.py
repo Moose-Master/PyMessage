@@ -1,48 +1,63 @@
 import socket
 import threading
 import DefOther
+import random
 connections = []
-names = ['Sever','Admin']
+names = ['Sever','Admin','Ivan']
 def multi_client(conn):
                 print(f"Connected by {addr}")
                 name = "Some User"
+                rand = random.randint(92,97)
+                
                 while True:
                         try:
                                 msglen = int.from_bytes(DefOther.fr(conn,4),byteorder='big')
                                 msgtyp = DefOther.fr(conn,1).decode('ascii')
                                 if msgtyp == 'M':
                                         data = DefOther.fr(conn,msglen).decode('utf-8')
-                                        print(name + ": " + data)
+                                        print('\033[' + str(rand)  + "m" + name + ": " + data)
                                         for c in connections:
                                                 if c != conn:                              
                                                         try:
-                                                                c.sendall((len(name + ": " + data)).to_bytes(4,'big'))
+                                                                msg = str.encode('\033[' + str(rand)  + "m" + name + ": " + data, "utf-8")
+                                                                c.sendall(len(msg).to_bytes(4,'big'))
                                                                 c.sendall(str.encode("M",'ascii'))
-                                                                c.sendall(str.encode(name + ": " + data,'utf-8'))
+                                                                c.sendall(msg)
                                                         except Exception:
-                                                                connections.remove(c)
                                                                 names.remove(name)
+                                                                connections.remove(c)
                                         if not data:
                                                 return
-                                else:
+                                elif msgtyp == '^':
                                         name = DefOther.fr(conn,msglen).decode('ascii')
                                         n_taken = 0                                       
                                         for i in range(len(names)):
-                                                print(names[i])
-                                                if name == names[i]:
+                                                if name.casefold() == names[i].casefold():
                                                         print('Match')
                                                         s.sendall((len('That Name is Taken Try Again')).to_bytes(4,'big'))
                                                         s.sendall(str.encode("^",'ascii'))
                                                         s.sendall(str.encode('That Name is Taken Try Again','utf-8'))
                                                         n_taken = 1
-                                                else:
-                                                        print("Not a match")
                                         if name == "AllKnowing":
                                                 name = 'Admin'
                                         elif name == "FullControl":
                                                 name = 'Sever'
+                                        elif name== "TrueOwner":
+                                                name = "Ivan"
                                         if n_taken == 0:
                                                 names.append(name)
+                                                print(name + " Joined")
+                                                for c in connections:
+                                                        if c != conn:                              
+                                                                try:
+                                                                        c.sendall((len(name + " Joined")).to_bytes(4,'big'))
+                                                                        c.sendall(str.encode("M",'ascii'))
+                                                                        c.sendall(str.encode(name + " Joined",'utf-8'))
+                                                                except Exception:
+                                                                        connections.remove(c)
+                                elif msgtyp == '*':
+                                        print()
+
                         except Exception:
                                 return
 HOST = "192.168.68.102" 

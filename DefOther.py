@@ -4,8 +4,16 @@ def fr(sock,lentgh):
     while len(buffer) < lentgh:
        buffer += sock.recv(lentgh - len(buffer))
     return buffer
-def sendmsg(type,sock):
-   mesg = str.encode(input(),"utf-8")
+def sendmsg(sock):
+   typ = "M"
+   mesg = input()
+   if mesg[0] == '^':
+      typ = '^'
+      mesg = mesg[1:]
+   elif mesg[0] == '*':
+      typ = '*'
+      mesg = mesg[1:]   
+   mesgts = str.encode(mesg,"utf-8")
    sock.sendall((len(mesg)).to_bytes(4,'big'))
-   sock.sendall(str.encode("M",'ascii'))
-   sock.sendall(mesg)
+   sock.sendall(str.encode(typ,'ascii'))
+   sock.sendall(mesgts)
