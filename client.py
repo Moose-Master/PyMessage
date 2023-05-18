@@ -9,18 +9,22 @@ def send():
     s.sendall(str.encode("^",'ascii'))
     s.sendall(str.encode(name,'ascii'))
     while True:
-        print("Ready")
         DefOther.sendmsg(s)
 sending = threading.Thread(target=send)
 def get():
-        while True:
-            bytelen = int.from_bytes(DefOther.fr(s,4),byteorder="big")
-            msgtyp = DefOther.fr(s,1).decode('ascii')
-            data = (DefOther.fr(s,bytelen)).decode('utf-8')
-            if msgtyp == "M":
-                print(data)
-            elif msgtyp == '^':
-                exit(0)
+        try:
+            while True:
+                bytelen = int.from_bytes(DefOther.fr(s,4),byteorder="big")
+                msgtyp = DefOther.fr(s,1).decode('ascii')
+                data = (DefOther.fr(s,bytelen)).decode('utf-8')
+                if msgtyp == "M":
+                    print(data)
+                elif msgtyp == '^':
+                    exit(0)
+        except Exception:
+            print('The server is now offline')
+            print('Please try again soon')
+            exit(0)
 receaving = threading.Thread(target=get)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
