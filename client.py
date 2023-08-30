@@ -3,7 +3,7 @@ import threading
 import DefOther
 msgtyp = 'M'
 HOST = "68.168.164.146"  # The server's hostname or IP address
-PORT = 65433  # The port used by the server
+PORT = 21894  # The port used by the server
 def send():
     s.sendall((len(name)).to_bytes(4,'big'))
     s.sendall(str.encode("^",'ascii'))
@@ -20,6 +20,11 @@ def get():
                 if msgtyp == "M":
                     print(data)
                 elif msgtyp == '^':
+                    print("That name is already in use")
+                    print("Please try again")
+                    exit(0)
+                elif msgtyp =='&':
+                    print("You have been kicked")
                     exit(0)
         except Exception:
             print('The server is now offline')
