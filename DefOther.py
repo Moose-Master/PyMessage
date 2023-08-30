@@ -20,6 +20,9 @@ def sendmsg(sock):
       elif mesg[0] == '#':
          typ = '#'
          mesg = mesg[1:]
+      elif mesg[0] == '!':
+         typ = '!'
+         mesg = mesg[1:]
       mesgts = str.encode(mesg,"utf-8")
       sock.sendall((len(mesg)).to_bytes(4,'big'))
       sock.sendall(str.encode(typ,'ascii'))

@@ -22,7 +22,6 @@ def get():
                 elif msgtyp == '^':
                     print("That name is already in use")
                     print("Please try again")
-                    exit(0)
                 elif msgtyp =='&':
                     print("You have been kicked")
                     exit(0)

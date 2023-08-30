@@ -112,6 +112,26 @@ def multi_client(conn):
                                                                 print(addr[0])
                                                         except Exception:
                                                                 connections.remove((c,cname))
+                                elif msgtyp == '!':
+                                        data = DefOther.fr(conn,msglen).decode('utf-8')
+                                        amount = len(data)
+                                        pm_name = ""
+                                        for i in range(amount):
+                                                if data[i] == '!':
+                                                        pm_name = data[:i]
+                                                        data = data[(i+1):]
+                                                        print(pm_name)
+                                                        print(data)
+                                                        break
+                                        for c, cname in connections:
+                                                if cname == pm_name:    
+                                                        try:
+                                                                msg = str.encode('\033[' + str(rand)  + "m" + name +": " + data, "utf-8")
+                                                                c.sendall(len(msg).to_bytes(4,'big'))
+                                                                c.sendall(str.encode("M",'ascii'))
+                                                                c.sendall(msg)
+                                                        except Exception:
+                                                                connections.remove((c,cname))
                         except Exception:
                                 return
 HOST = "192.168.68.103" 
