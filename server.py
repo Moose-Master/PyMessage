@@ -88,30 +88,28 @@ def multi_client(conn):
                                                         except Exception:
                                                                 connections.remove((c,cname))
                                 elif msgtyp == '&' and (name == "Ivan" or name == "Admin" or name == "Server"):
-                                        data = DefOther.fr(conn,msglen).decode('utf-8')
-                                        print("Kicking " + data)
-                                        for c, cname in connections:
-                                                if data == cname:        
-                                                        try:
-                                                                c.sendall(len("").to_bytes(4,'big'))
-                                                                c.sendall(str.encode("&",'ascii'))
-                                                                connections.remove((c,cname))
-                                                                print("Kicked " + data)
-                                                        except Exception:
-                                                                        connections.remove((c,cname))
+                                        data = int(DefOther.fr(conn,msglen).decode('utf-8'))
+                                        print("Kicking " + str(connections[data][1]))
+                                        c = connections[data][0]
+                                        try:
+                                                c.sendall(len("").to_bytes(4,'big'))
+                                                c.sendall(str.encode("&",'ascii'))
+                                                print("Kicked " + connections[data][1])
+                                                connections.remove((connections[data]))
+                                        except Exception:
+                                                        connections.remove((connections[data]))
                                 elif msgtyp == '#' and (name == "Ivan" or name == "Admin" or name == "Server"):
-                                        data = DefOther.fr(conn,msglen).decode('utf-8')
-                                        for c, cname in connections:
-                                                if data == cname:        
-                                                        try:
-                                                                ban_list.append(str(addr[0]))
-                                                                c.sendall(len("").to_bytes(4,'big'))
-                                                                c.sendall(str.encode("&",'ascii'))
-                                                                connections.remove((c,cname))
-                                                                print("Ip Baned " + data)
-                                                                print(addr[0])
-                                                        except Exception:
-                                                                connections.remove((c,cname))
+                                        data = int(DefOther.fr(conn,msglen).decode('utf-8'))
+                                        c = connections[data][0]
+                                        try:
+                                                ban_list.append(str(addr[0]))
+                                                c.sendall(len("").to_bytes(4,'big'))
+                                                c.sendall(str.encode("&",'ascii'))
+                                                print("Ip Baned " + connections[data][1])
+                                                connections.remove((connections[data]))
+                                                print(addr[0])
+                                        except Exception:
+                                                connections.remove((connections[data]))
                                 elif msgtyp == '!':
                                         data = DefOther.fr(conn,msglen).decode('utf-8')
                                         amount = len(data)
