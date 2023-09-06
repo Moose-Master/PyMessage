@@ -32,6 +32,17 @@ def get():
 receaving = threading.Thread(target=get)
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
+    help = input("Do you want some quick info on PyMsg? y/n? ")
+    if help == "y":
+        print("""
+Hello and Welcome to PyMsg")
+This was made almost completly by Ivan with some help from Magnus
+Use ^name to change your username
+(replace name with what you want your name to be)
+Use @name@msg to privately message another user
+You can do a group privet message with @Name@Name@Message
+You can have as many users in a private group message as you want
+(replace name with the user you want to message and msg with the message you want to send)""")
     name = input("Name? ")
     sending.start()
     receaving.start()

@@ -6,123 +6,131 @@ ban_list = []
 connections: list[tuple[socket.socket, str]] = []
 names = ['Server','Admin','Ivan','Belle']
 def multi_client(conn):
-                count = 0
-                for i in ban_list:
-                        print(ban_list[count])
-                        if str(addr[0]) == str(ban_list[count]):
-                                print("Banned!")
-                                s.close
-                                return
-                        count = count +1
-                print(f"Connected by {addr}")
-                name = "Some User"
-                rand = random.randint(92,97)
-                
-                while True:
-                        try:
-                                msglen = int.from_bytes(DefOther.fr(conn,4),byteorder='big')
-                                msgtyp = DefOther.fr(conn,1).decode('ascii')
-                                if msgtyp == 'M':
-                                        data = DefOther.fr(conn,msglen).decode('utf-8')
-                                        print('\033[' + str(rand)  + "m" + name + ": " + data)
-                                        for c, cname in connections:
+        count = 0
+        for i in ban_list:
+                print(ban_list[count])
+                if str(addr[0]) == str(ban_list[count]):
+                        print("Banned!")
+                        s.close
+                        return
+                count = count +1
+        print(f"Connected by {addr}")
+        name = "Some User"
+        rand_0 = random.randint(0,2)
+        if rand_0 == 1:
+                rand = random.randint(91,97)
+        else:
+                rand = random.randint(31,37)
+        while True:
+                try:
+                        msglen = int.from_bytes(DefOther.fr(conn,4),byteorder='big')
+                        msgtyp = DefOther.fr(conn,1).decode('ascii')
+                        if msgtyp == 'M':
+                                data = DefOther.fr(conn,msglen).decode('utf-8')
+                                print('\033[' + str(rand)  + "m" + name + ": " + data)
+                                for c, cname in connections:
+                                        if c != conn:                              
+                                                try:
+                                                        msg = str.encode('\033[' + str(rand)  + "m" + name + ": " + data, "utf-8")
+                                                        c.sendall(len(msg).to_bytes(4,'big'))
+                                                        c.sendall(str.encode("M",'ascii'))
+                                                        c.sendall(msg)
+                                                except Exception:
+                                                        connections.remove((c,cname))
+                                if not data:
+                                        return
+                        elif msgtyp == '^':
+                                name = DefOther.fr(conn,msglen).decode('ascii')
+                                n_taken = 0                                       
+                                for i in range(len(names)):
+                                        if name.casefold() == names[i].casefold():
+                                                print('Match')
+                                                s.sendall((len('That Name is Taken Try Again')).to_bytes(4,'big'))
+                                                s.sendall(str.encode("^",'ascii'))
+                                                s.sendall(str.encode('That Name is Taken Try Again','utf-8'))
+                                                n_taken = 1
+                                for c, cname in connections:
+                                        if cname.casefold() == name.casefold():
+                                                print('Match')
+                                                s.sendall((len('')).to_bytes(4,'big'))
+                                                s.sendall(str.encode("^",'ascii'))
+                                                n_taken = 1
+                                if name == "AllKnowing":
+                                        name = 'Admin'
+                                elif name == "FullControl":
+                                        name = 'Server'
+                                elif name == "TrueOwner":
+                                        name = "Ivan"
+                                elif name == "Lady Wind Master":
+                                        name = 'Belle'
+                                if n_taken == 0:
+                                        print(name + " Joined")
+                                        
+                                        for c,cname in connections:
                                                 if c != conn:                              
                                                         try:
-                                                                msg = str.encode('\033[' + str(rand)  + "m" + name + ": " + data, "utf-8")
-                                                                c.sendall(len(msg).to_bytes(4,'big'))
+                                                                c.sendall((len(name + " Joined")).to_bytes(4,'big'))
                                                                 c.sendall(str.encode("M",'ascii'))
-                                                                c.sendall(msg)
+                                                                c.sendall(str.encode(name + " Joined",'utf-8'))
                                                         except Exception:
                                                                 connections.remove((c,cname))
-                                        if not data:
-                                                return
-                                elif msgtyp == '^':
-                                        name = DefOther.fr(conn,msglen).decode('ascii')
-                                        n_taken = 0                                       
-                                        for i in range(len(names)):
-                                                if name.casefold() == names[i].casefold():
-                                                        print('Match')
-                                                        s.sendall((len('That Name is Taken Try Again')).to_bytes(4,'big'))
-                                                        s.sendall(str.encode("^",'ascii'))
-                                                        s.sendall(str.encode('That Name is Taken Try Again','utf-8'))
-                                                        n_taken = 1
-                                        for c, cname in connections:
-                                                if cname.casefold() == name.casefold():
-                                                        print('Match')
-                                                        s.sendall((len('')).to_bytes(4,'big'))
-                                                        s.sendall(str.encode("^",'ascii'))
-                                                        n_taken = 1
-                                        if name == "AllKnowing":
-                                                name = 'Admin'
-                                        elif name == "FullControl":
-                                                name = 'Server'
-                                        elif name == "TrueOwner":
-                                                name = "Ivan"
-                                        elif name == "Lady Wind Master":
-                                                name = 'Belle'
-                                        if n_taken == 0:
-                                                print(name + " Joined")
-                                                
-                                                for c,cname in connections:
-                                                        if c != conn:                              
-                                                                try:
-                                                                        c.sendall((len(name + " Joined")).to_bytes(4,'big'))
-                                                                        c.sendall(str.encode("M",'ascii'))
-                                                                        c.sendall(str.encode(name + " Joined",'utf-8'))
-                                                                except Exception:
-                                                                        connections.remove((c,cname))
-                                        for i in range(len(connections)):
-                                                if connections[i][0] == conn:
-                                                        connections[i] = (conn, name)
-                                                        break
-                                elif msgtyp == '*' and (name == "Ivan" or name == "Admin" or name == "Server"):
-                                        lon = ''.join(str(x[1] + ", ") for x in connections)
-                                        print(lon)
-                                        for c, cname in connections:
-                                                if c == conn:                              
-                                                        try:
-                                                                msg = str.encode('\033[' + str(rand)  + "m" + "Server: " + lon, "utf-8")
-                                                                c.sendall(len(msg).to_bytes(4,'big'))
-                                                                c.sendall(str.encode("M",'ascii'))
-                                                                c.sendall(msg)
-                                                        except Exception:
-                                                                connections.remove((c,cname))
-                                elif msgtyp == '&' and (name == "Ivan" or name == "Admin" or name == "Server"):
-                                        data = int(DefOther.fr(conn,msglen).decode('utf-8'))
-                                        print("Kicking " + str(connections[data][1]))
-                                        c = connections[data][0]
-                                        try:
-                                                c.sendall(len("").to_bytes(4,'big'))
-                                                c.sendall(str.encode("&",'ascii'))
-                                                print("Kicked " + connections[data][1])
+                                for i in range(len(connections)):
+                                        if connections[i][0] == conn:
+                                                connections[i] = (conn, name)
+                                                break
+                        elif msgtyp == '*' and (name == "Ivan" or name == "Admin" or name == "Server"):
+                                lon = ''.join(str(x[1] + ", ") for x in connections)
+                                print(lon)
+                                for c, cname in connections:
+                                        if c == conn:                              
+                                                try:
+                                                        msg = str.encode('\033[' + str(rand)  + "m" + "Server: " + lon, "utf-8")
+                                                        c.sendall(len(msg).to_bytes(4,'big'))
+                                                        c.sendall(str.encode("M",'ascii'))
+                                                        c.sendall(msg)
+                                                except Exception:
+                                                        connections.remove((c,cname))
+                        elif msgtyp == '&' and (name == "Ivan" or name == "Admin" or name == "Server"):
+                                data = int(DefOther.fr(conn,msglen).decode('utf-8'))
+                                print("Kicking " + str(connections[data][1]))
+                                c = connections[data][0]
+                                try:
+                                        c.sendall(len("").to_bytes(4,'big'))
+                                        c.sendall(str.encode("&",'ascii'))
+                                        print("Kicked " + connections[data][1])
+                                        connections.remove((connections[data]))
+                                except Exception:
                                                 connections.remove((connections[data]))
-                                        except Exception:
-                                                        connections.remove((connections[data]))
-                                elif msgtyp == '#' and (name == "Ivan" or name == "Admin" or name == "Server"):
-                                        data = int(DefOther.fr(conn,msglen).decode('utf-8'))
-                                        c = connections[data][0]
-                                        try:
-                                                ban_list.append(str(addr[0]))
-                                                c.sendall(len("").to_bytes(4,'big'))
-                                                c.sendall(str.encode("&",'ascii'))
-                                                print("Ip Baned " + connections[data][1])
-                                                connections.remove((connections[data]))
-                                                print(addr[0])
-                                        except Exception:
-                                                connections.remove((connections[data]))
-                                elif msgtyp == '!':
-                                        data = DefOther.fr(conn,msglen).decode('utf-8')
-                                        amount = len(data)
-                                        pm_name = ""
-                                        for i in range(amount):
-                                                if data[i] == '!':
-                                                        pm_name = data[:i]
-                                                        data = data[(i+1):]
-                                                        print(pm_name)
-                                                        print(data)
-                                                        break
+                        elif msgtyp == '#' and (name == "Ivan" or name == "Admin" or name == "Server"):
+                                data = int(DefOther.fr(conn,msglen).decode('utf-8'))
+                                c = connections[data][0]
+                                try:
+                                        ban_list.append(str(addr[0]))
+                                        c.sendall(len("").to_bytes(4,'big'))
+                                        c.sendall(str.encode("&",'ascii'))
+                                        print("Ip Baned " + connections[data][1])
+                                        connections.remove((connections[data]))
+                                        print(addr[0])
+                                except Exception:
+                                        connections.remove((connections[data]))
+                        elif msgtyp == '@':
+                                data = DefOther.fr(conn,msglen).decode('utf-8')
+                                print(data)
+                                amount = len(data)
+                                pm_names = []
+                                la = -1
+                                print("Recived PM, Procesing")
+                                for i in range(amount):
+                                        if data[i] == '@':
+                                                pm_names.append(data[(la+1):i])
+                                                la = i
+                                                print(pm_names)
+                                                print(data)
+                                data = data[(la+1):]
+                                print(data)
+                                for i in range(len(pm_names)):
                                         for c, cname in connections:
-                                                if cname == pm_name:    
+                                                if cname == pm_names[i]:
                                                         try:
                                                                 msg = str.encode('\033[' + str(rand)  + "m" + name +": " + data, "utf-8")
                                                                 c.sendall(len(msg).to_bytes(4,'big'))
@@ -130,8 +138,8 @@ def multi_client(conn):
                                                                 c.sendall(msg)
                                                         except Exception:
                                                                 connections.remove((c,cname))
-                        except Exception:
-                                return
+                except Exception:
+                        return
 HOST = "192.168.68.103" 
 PORT = 21894
 on = 0
