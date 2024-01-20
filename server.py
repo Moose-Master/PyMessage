@@ -142,13 +142,10 @@ def multi_client(conn):
                         return
 HOST = "192.168.68.103" 
 PORT = 21894
-on = 0
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
         s.bind((HOST, PORT))
+        print("Im On")
         while True:
-                if on == 0:
-                        print("I'm On")
-                        on = 1
                 s.listen()
                 conn, addr = s.accept()
                 connections.append((conn, "anonymous"))
