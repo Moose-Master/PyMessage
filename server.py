@@ -4,16 +4,14 @@ import DefOther
 import random
 ban_list = []
 connections: list[tuple[socket.socket, str]] = []
-names = ['Server','Admin','Ivan','Belle']
+names = ['Server','Admin','Ivan','Belle','Magnus','Cdog']
 def multi_client(conn):
-        count = 0
         for i in ban_list:
-                print(ban_list[count])
-                if str(addr[0]) == str(ban_list[count]):
+                print(ban_list[i])
+                if str(addr[0]) == str(ban_list[i]):
                         print("Banned!")
                         s.close
                         return
-                count = count +1
         print(f"Connected by {addr}")
         name = "Some User"
         rand_0 = random.randint(0,2)
@@ -41,20 +39,20 @@ def multi_client(conn):
                                         return
                         elif msgtyp == '^':
                                 name = DefOther.fr(conn,msglen).decode('ascii')
-                                n_taken = 0                                       
+                                n_taken = False                                       
                                 for i in range(len(names)):
                                         if name.casefold() == names[i].casefold():
                                                 print('Match')
                                                 s.sendall((len('That Name is Taken Try Again')).to_bytes(4,'big'))
                                                 s.sendall(str.encode("^",'ascii'))
                                                 s.sendall(str.encode('That Name is Taken Try Again','utf-8'))
-                                                n_taken = 1
+                                                n_taken = True
                                 for c, cname in connections:
                                         if cname.casefold() == name.casefold():
                                                 print('Match')
                                                 s.sendall((len('')).to_bytes(4,'big'))
                                                 s.sendall(str.encode("^",'ascii'))
-                                                n_taken = 1
+                                                n_taken = True
                                 if name == "AllKnowing":
                                         name = 'Admin'
                                 elif name == "FullControl":
@@ -63,7 +61,11 @@ def multi_client(conn):
                                         name = "Ivan"
                                 elif name == "Lady Wind Master":
                                         name = 'Belle'
-                                if n_taken == 0:
+                                elif name == "wdydicst":
+                                        name = 'Magnus'
+                                elif name == "hey Ivan the robot broke":
+                                        name = 'Cdog'
+                                if n_taken == False:
                                         print(name + " Joined")
                                         
                                         for c,cname in connections:
@@ -140,11 +142,12 @@ def multi_client(conn):
                                                                 connections.remove((c,cname))
                 except Exception:
                         return
-HOST = "192.168.68.103" 
+HOST = "192.168.68.105" 
 PORT = 21894
+on = False
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
         s.bind((HOST, PORT))
-        print("Im On")
+        print("I'm On")
         while True:
                 s.listen()
                 conn, addr = s.accept()
