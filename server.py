@@ -143,8 +143,7 @@ def multi_client(conn):
                 except Exception:
                         return
 HOST = "192.168.68.105" 
-PORT = 21894
-on = False
+PORT = 2189
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
         s.bind((HOST, PORT))
         print("I'm On")
