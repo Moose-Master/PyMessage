@@ -4,7 +4,7 @@ import DefOther
 import random
 ban_list = []
 connections: list[tuple[socket.socket, str]] = []
-names = ['Server','Admin','Ivan','Belle','Magnus','Cdog']
+names = ['Server','Admin','Ivan','Belle']
 def multi_client(conn):
         for i in ban_list:
                 print(ban_list[i])
@@ -40,6 +40,14 @@ def multi_client(conn):
                         elif msgtyp == '^':
                                 name = DefOther.fr(conn,msglen).decode('ascii')
                                 n_taken = False                                       
+                                if name == "AllKnowing":
+                                        name = 'Admin'
+                                elif name == "FullControl":
+                                        name = 'Server'
+                                elif name == "TrueOwner":
+                                        name = "Ivan"
+                                elif name == "Lady Wind Master":
+                                        name = 'Belle'
                                 for i in range(len(names)):
                                         if name.casefold() == names[i].casefold():
                                                 print('Match')
@@ -53,18 +61,6 @@ def multi_client(conn):
                                                 s.sendall((len('')).to_bytes(4,'big'))
                                                 s.sendall(str.encode("^",'ascii'))
                                                 n_taken = True
-                                if name == "AllKnowing":
-                                        name = 'Admin'
-                                elif name == "FullControl":
-                                        name = 'Server'
-                                elif name == "TrueOwner":
-                                        name = "Ivan"
-                                elif name == "Lady Wind Master":
-                                        name = 'Belle'
-                                elif name == "wdydicst":
-                                        name = 'Magnus'
-                                elif name == "hey Ivan the robot broke":
-                                        name = 'Cdog'
                                 if n_taken == False:
                                         print(name + " Joined")
                                         

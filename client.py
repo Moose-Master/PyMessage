@@ -35,7 +35,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     help = input("Do you want some quick info on PyMsg? y/n? ")
     if help == "y":
         print("""
-Hello and Welcome to PyMsg")
+Hello and Welcome to PyMsg
 This was made almost completly by Ivan with some help from Magnus
 Use ^name to change your username
 (replace name with what you want your name to be)
