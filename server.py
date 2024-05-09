@@ -138,7 +138,7 @@ def multi_client(conn):
                                                                 connections.remove((c,cname))
                 except Exception:
                         return
-HOST = "192.168.68.105" 
+HOST = "0.0.0.0" 
 PORT = 2189
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s: 
         s.bind((HOST, PORT))

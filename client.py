@@ -2,7 +2,7 @@ import socket
 import threading
 import DefOther
 msgtyp = 'M'
-HOST = "68.168.164.146"  # The server's hostname or IP address
+HOST = "68.168.162.105"  # The server's hostname or IP address
 PORT = 21894  # The port used by the server
 def send():
     s.sendall((len(name)).to_bytes(4,'big'))
