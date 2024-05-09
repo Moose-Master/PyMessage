@@ -6,7 +6,7 @@ ban_list = []
 connections: list[tuple[socket.socket, str]] = []
 names = ['Server','Admin','Ivan','Belle']
 def multi_client(conn):
-        for i in ban_list:
+        for i in range(len(ban_list)):
                 print(ban_list[i])
                 if str(addr[0]) == str(ban_list[i]):
                         print("Banned!")
