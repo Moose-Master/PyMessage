@@ -40,7 +40,7 @@ This was made almost completly by Ivan with some help from Magnus
 Use ^name to change your username
 (replace name with what you want your name to be)
 Use @name@msg to privately message another user
-You can do a group privet message with @Name@Name@Message
+You can do a group private message with @Name@Name@Message
 You can have as many users in a private group message as you want
 (replace name with the user you want to message and msg with the message you want to send)""")
     name = input("Name? ")
