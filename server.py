@@ -40,13 +40,13 @@ def multi_client(conn):
                         elif msgtyp == '^':
                                 name = DefOther.fr(conn,msglen).decode('ascii')
                                 n_taken = False                                       
-                                if name.casefold == "AllKnowing".casefold:
+                                if name.casefold() == "AllKnowing".casefold():
                                         name = 'Admin'
-                                elif name.casefold == "FullControl".casefold:
+                                elif name.casefold() == "FullControl".casefold():
                                         name = 'Server'
-                                elif name.casefold == "TrueOwner".casefold:
+                                elif name.casefold() == "TrueOwner".casefold():
                                         name = "Ivan"
-                                elif name.casefold == "Lady Wind Master".casefold:
+                                elif name.casefold() == "Lady Wind Master".casefold():
                                         name = 'Belle'
                                 for i in range(len(names)):
                                         if name.casefold() == names[i].casefold():
