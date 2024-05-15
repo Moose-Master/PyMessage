@@ -135,6 +135,31 @@ def multi_client(conn):
                                                                 c.sendall(msg)
                                                         except Exception:
                                                                 connections.remove((c,cname))
+                        elif msgtyp == '$':
+                                data = DefOther.fr(conn,msglen).decode('utf-8')
+                                print(data)
+                                amount = len(data)
+                                exm_names = []
+                                ld = -1
+                                print("Recived PM, Procesing")
+                                for i in range(amount):
+                                        if data[i] == '@':
+                                                exm_names.append(data[(ld+1):i])
+                                                ld = i
+                                                print(exm_names)
+                                                print(data)
+                                data = data[(ld+1):]
+                                print(data)
+                                for i in range(len(exm_names)):
+                                        for c, cname in connections:
+                                                if cname == exm_names[i]:
+                                                        try:
+                                                                msg = str.encode('\033[' + str(rand)  + "m" + name +": " + data, "utf-8")
+                                                                c.sendall(len(msg).to_bytes(4,'big'))
+                                                                c.sendall(str.encode("M",'ascii'))
+                                                                c.sendall(msg)
+                                                        except Exception:
+                                                                connections.remove((c,cname))
                 except Exception:
                         return
 HOST = "0.0.0.0" 
