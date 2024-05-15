@@ -40,14 +40,6 @@ def multi_client(conn):
                         elif msgtyp == '^':
                                 name = DefOther.fr(conn,msglen).decode('ascii')
                                 n_taken = False                                       
-                                if name.casefold == "AllKnowing".casefold:
-                                        name = 'Admin'
-                                elif name.casefold == "FullControl".casefold:
-                                        name = 'Server'
-                                elif name.casefold == "TrueOwner".casefold:
-                                        name = "Ivan"
-                                elif name.casefold == "Lady Wind Master".casefold:
-                                        name = 'Belle'
                                 for i in range(len(names)):
                                         if name.casefold() == names[i].casefold():
                                                 print('Match')
@@ -61,6 +53,14 @@ def multi_client(conn):
                                                 s.sendall((len('')).to_bytes(4,'big'))
                                                 s.sendall(str.encode("^",'ascii'))
                                                 n_taken = True
+                                if name.casefold == "AllKnowing".casefold:
+                                        name = 'Admin'
+                                elif name.casefold == "FullControl".casefold:
+                                        name = 'Server'
+                                elif name.casefold == "TrueOwner".casefold:
+                                        name = "Ivan"
+                                elif name.casefold == "Lady Wind Master".casefold:
+                                        name = 'Belle'
                                 if n_taken == False:
                                         print(name + " Joined")
                                         
@@ -76,7 +76,7 @@ def multi_client(conn):
                                         if connections[i][0] == conn:
                                                 connections[i] = (conn, name)
                                                 break
-                        elif msgtyp == '*' and (name == "Ivan" or name == "Admin" or name == "Server"):
+                        elif msgtyp == '*':
                                 lon = ''.join(str(x[1] + ", ") for x in connections)
                                 print(lon)
                                 for c, cname in connections:
