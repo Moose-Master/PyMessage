@@ -53,17 +53,16 @@ def multi_client(conn):
                                                 s.sendall((len('')).to_bytes(4,'big'))
                                                 s.sendall(str.encode("^",'ascii'))
                                                 n_taken = True
-                                if name.casefold == "AllKnowing".casefold:
+                                if name.casefold() == "AllKnowing".casefold():
                                         name = 'Admin'
-                                elif name.casefold == "FullControl".casefold:
+                                elif name.casefold() == "FullControl".casefold():
                                         name = 'Server'
-                                elif name.casefold == "TrueOwner".casefold:
+                                elif name.casefold() == "TrueOwner".casefold():
                                         name = "Ivan"
-                                elif name.casefold == "Lady Wind Master".casefold:
+                                elif name.casefold() == "Lady Wind Master".casefold():
                                         name = 'Belle'
                                 if n_taken == False:
                                         print(name + " Joined")
-                                        
                                         for c,cname in connections:
                                                 if c != conn:                              
                                                         try:
