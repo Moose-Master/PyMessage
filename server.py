@@ -141,9 +141,9 @@ def multi_client(conn):
                                 amount = len(data)
                                 exm_names = []
                                 ld = -1
-                                print("Recived PM, Procesing")
+                                print("Recived EXM, Procesing")
                                 for i in range(amount):
-                                        if data[i] == '@':
+                                        if data[i] == '$':
                                                 exm_names.append(data[(ld+1):i])
                                                 ld = i
                                                 print(exm_names)
