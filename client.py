@@ -39,9 +39,13 @@ Hello and Welcome to PyMsg
 This was made almost completly by Ivan with some help from Magnus
 Use ^name to change your username
 (replace name with what you want your name to be)
+Use * to see a list of all connected users
 Use @name@msg to privately message another user
 You can do a group private message with @Name@Name@Message
 You can have as many users in a private group message as you want
+Use $name$msg to exclude a user from a message
+You can exculude a group from a message with $Name$Name$Message
+You can exclude as many users as you want from a message
 (replace name with the user you want to message and msg with the message you want to send)""")
     name = input("Name? ")
     sending.start()
